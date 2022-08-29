@@ -1,0 +1,8 @@
+com\wavemaker\manager\implementation\RoomOperations.class
+com\wavemaker\model\User.class
+com\wavemaker\manager\RoomManager.class
+com\wavemaker\model\Room.class
+com\wavemaker\connectivity\MySQLConnectionUtility.class
+com\wavemaker\controller\RoomServlet.class
+com\wavemaker\model\Booking.class
+com\wavemaker\Main.class
