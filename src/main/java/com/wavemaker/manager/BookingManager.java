@@ -8,4 +8,5 @@ public interface BookingManager {
     void addBooking(int userId,int bedId);
     void deleteBooking(int userId,int bedId);
     List<Booking> displayBookings();
+    int searchBooking(int userId,int bedId);
 }

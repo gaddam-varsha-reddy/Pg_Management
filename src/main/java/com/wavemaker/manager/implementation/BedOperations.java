@@ -4,6 +4,7 @@ import com.wavemaker.connectivity.MySQLConnectionUtility;
 import com.wavemaker.manager.BedManager;
 import com.wavemaker.model.Bed;
 import com.wavemaker.model.Room;
+import com.wavemaker.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -63,4 +64,62 @@ public class BedOperations implements BedManager {
         }
         return bedList;
     }
+    @Override
+    public int searchBedId(int roomNo,int floorNo,int bedNo){
+        Connection connection = MySQLConnectionUtility.getConnection();
+        String sql = "select Id from Room where Room_No=? and Floor_No=?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, roomNo);
+            statement.setInt(2, floorNo);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                sql = "SELECT Id FROM Bed where Room_Id=? and Bed_No=?";
+                try {
+                    PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setInt(1, id);
+                    ps.setInt(2, bedNo);
+                    resultSet = ps.executeQuery();
+                    while (resultSet.next()) {
+                        id = resultSet.getInt("ID");
+                    return id;
+                    }
+                }
+                catch (Exception e) {
+                    System.out.println("Exception found in searching bed id");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Exception found in searching room id");
+        }
+        return -1;
+    }
+    @Override
+    public void updateBedStatusOccupied(int id){
+        Connection connection = MySQLConnectionUtility.getConnection();
+        String sql = "update Bed set isfull=true where id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (SQLException e) {
+            System.out.println("Exception found in updating status");
+        }
+
+    }
+    @Override
+    public void updateBedStatusVaccant(int id){
+        Connection connection = MySQLConnectionUtility.getConnection();
+        String sql = "update Bed set isfull=false where id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (SQLException e) {
+            System.out.println("Exception found in updating status");
+        }
+
+    }
+
 }

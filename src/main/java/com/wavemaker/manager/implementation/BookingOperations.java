@@ -56,4 +56,23 @@ public class BookingOperations implements BookingManager {
         }
         return bookingList;
     }
+    @Override
+    public int searchBooking(int userId,int bedId){
+        Connection connection = MySQLConnectionUtility.getConnection();
+        String sql = "SELECT Id FROM Booking where User_Id=? and Bed_Id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ps.setInt(2, bedId);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                return id;
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Exception found in searching booking id");
+        }
+        return -1;
+    }
 }

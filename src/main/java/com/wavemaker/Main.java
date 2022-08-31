@@ -1,29 +1,22 @@
 package com.wavemaker;
-import com.wavemaker.manager.BedManager;
-import com.wavemaker.manager.BookingManager;
-import com.wavemaker.manager.RoomManager;
-import com.wavemaker.manager.UserManager;
-import com.wavemaker.manager.implementation.BedOperations;
-import com.wavemaker.manager.implementation.BookingOperations;
-import com.wavemaker.manager.implementation.RoomOperations;
-import com.wavemaker.manager.implementation.UserOperations;
-import com.wavemaker.model.Bed;
-import com.wavemaker.model.Booking;
-import com.wavemaker.model.Room;
-import com.wavemaker.model.User;
+import com.wavemaker.manager.*;
+import com.wavemaker.manager.implementation.*;
+import com.wavemaker.model.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        RoomManager roomManager=new RoomOperations();
+        RoomManager roomManager=new Roomoperations();
         BedManager bedManager=new BedOperations();
         BookingManager bookingManager=new BookingOperations();
         UserManager userManager=new UserOperations();
+        RoomBedManager roomBedManager=new RoomBedOperations();
         Scanner sc=new Scanner(System.in);
         int n=sc.nextInt();
-        while(n!=13) {
+        while(n!=22) {
             switch (n) {
                 case 1:
                     System.out.println("Add Room");
@@ -154,6 +147,145 @@ public class Main {
                     n=sc.nextInt();
                     break;
                 case 13:
+                    System.out.println("Fetching Bed Id using roomno,floorno,bedno");
+                    System.out.println("Enter roomno:");
+                    roomNo=sc.nextInt();
+                    System.out.println("Enter floorno:");
+                    floorno=sc.nextInt();
+                    System.out.println("Enter bedno");
+                    int bedno= sc.nextInt();
+                    id= bedManager.searchBedId(roomNo,floorno,bedno);
+                    System.out.println("Bed Id"+id);
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+
+                case 14:
+                    System.out.println("Enter email of user to search");
+                    email=sc.next();
+                    id=userManager.searchUserId(email);
+                    System.out.println("User Id:"+id);
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 15:
+                    System.out.println("Book a bed for user");
+                    System.out.println("Enter roomno:");
+                    roomNo=sc.nextInt();
+                    System.out.println("Enter floorno:");
+                    floorno=sc.nextInt();
+                    System.out.println("Enter bedno");
+                    bedno= sc.nextInt();
+                    int bedid= bedManager.searchBedId(roomNo,floorno,bedno);
+                    if(bedid!=1){
+                        System.out.println("Enter first name");
+                        firstName=sc.next();
+                        System.out.println("Enter last name");
+                        lastName=sc.next();
+                        System.out.println("Enter mobile no");
+                        mobileNo=sc.next();
+                        System.out.println("Enter email");
+                        email=sc.next();
+                        System.out.println("Enter Age");
+                        age=sc.nextInt();
+                        userManager.addUser(new User(bedid,firstName,lastName,mobileNo,email,age));
+                        int userid=userManager.searchUserId(email);
+                        if(userid!=-1) {
+                            bookingManager.addBooking(userid, bedid);
+                            int bookingId=bookingManager.searchBooking(userid,bedid);
+                            if(bookingId==-1){
+                                userManager.deleteUser(email);
+                            }
+                            else{
+                                //update bed status as filled.
+                                bedManager.updateBedStatusOccupied(bedid);
+                            }
+                        }
+                        else{
+                            System.out.println("Enter user details correctly");
+                        }
+                    }
+                    else{
+                        System.out.println("You cannot book for that bed");
+                    }
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 16:
+                    System.out.println("Search booking");
+                    System.out.println("Enter UserId");
+                    userId=sc.nextInt();
+                    System.out.println("Enter BedId");
+                    bedId=sc.nextInt();
+                    id=bookingManager.searchBooking(userId,bedId);
+                    System.out.println("Booking Id:"+id);
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 17:
+                    System.out.println("Updating Bed Status");
+                    System.out.println("Enter Bed Id:");
+                    bedid=sc.nextInt();
+                    bedManager.updateBedStatusOccupied(bedid);
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 18:
+                    System.out.println("Deleting Booking");
+                    System.out.println("Enter email:");
+                    email=sc.next();
+                    userId=userManager.searchUserId(email);
+                    if(userId!=-1){
+                        System.out.println("Enter roomno:");
+                        roomNo=sc.nextInt();
+                        System.out.println("Enter floorno:");
+                        floorno=sc.nextInt();
+                        System.out.println("Enter bedno");
+                        bedno= sc.nextInt();
+                        bedid= bedManager.searchBedId(roomNo,floorno,bedno);
+                        if(bedid!=-1){
+                            userManager.deleteUser(email);
+                            bookingManager.deleteBooking(userId,bedid);
+                            bedManager.updateBedStatusVaccant(bedid);
+                        }
+                        else{
+                            System.out.println("Enter correct room details");
+                        }
+                    }
+                    else {
+                        System.out.println("Enter correct user email");
+                    }
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 19:
+                    System.out.println("display all rooms");
+                    List<Roombed> roombedList=roomBedManager.displayAllRooms();
+                    for(Roombed listItem:roombedList){
+                        System.out.println("Room_No:" +listItem.getRoom_No()+"\tFloor_No:" +listItem.getFloorNo()+"\tBed_No:" +listItem.getBed_No()+ "\tisfull:"+ listItem.getIsfull());
+                    }
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 20:
+                    System.out.println("display all vaccant rooms");
+                   roombedList=roomBedManager.displayAllVaccantRooms();
+                    for(Roombed listItem:roombedList){
+                        System.out.println("Room_No:" +listItem.getRoom_No()+"\tFloor_No:" +listItem.getFloorNo()+"\tBed_No:" +listItem.getBed_No()+ "\tisfull:"+ listItem.getIsfull());
+                    }
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 21:
+                    System.out.println("display all occupied rooms");
+                    roombedList=roomBedManager.displayAllOccupiedRooms();
+                    for(Roombed listItem:roombedList){
+                        System.out.println("Room_No:" +listItem.getRoom_No()+"\tFloor_No:" +listItem.getFloorNo()+"\tBed_No:" +listItem.getBed_No()+ "\tisfull:"+ listItem.getIsfull());
+                    }
+                    System.out.println("Enter n");
+                    n=sc.nextInt();
+                    break;
+                case 22:
                     System.out.println("Exit");
                     System.out.println("Enter n");
                     n=sc.nextInt();

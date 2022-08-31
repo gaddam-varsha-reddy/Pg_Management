@@ -1,10 +1,8 @@
 package com.wavemaker.manager.implementation;
-
 import com.wavemaker.connectivity.MySQLConnectionUtility;
 import com.wavemaker.manager.UserManager;
 import com.wavemaker.model.Room;
 import com.wavemaker.model.User;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +56,23 @@ public class UserOperations implements UserManager {
             System.out.println("Exception found in displaying user");
         }
         return userList;
+    }
+    @Override
+    public int searchUserId(String email){
+        Connection connection = MySQLConnectionUtility.getConnection();
+        String sql = "SELECT Id FROM User where email=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                return id;
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Exception found in searching user id");
+        }
+       return -1;
     }
 }
