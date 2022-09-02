@@ -1,8 +1,7 @@
 package com.wavemaker.manager.implementation;
-import com.wavemaker.connectivity.MySQLConnectionUtility;
+import com.wavemaker.connection.MySQLConnectionUtility;
 import com.wavemaker.manager.BookingManager;
 import com.wavemaker.model.Booking;
-import com.wavemaker.model.Room;
 
 import java.sql.*;
 import java.util.ArrayList;

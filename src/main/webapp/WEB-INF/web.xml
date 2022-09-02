@@ -13,4 +13,45 @@
         <url-pattern>/room/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>OccupiedRoomServlet</servlet-name>
+        <servlet-class>com.wavemaker.controller.OccupiedRoomServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OccupiedRoomServlet</servlet-name>
+        <url-pattern>/occupiedroom/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VaccantRoomServlet</servlet-name>
+        <servlet-class>com.wavemaker.controller.VaccantRoomServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VaccantRoomServlet</servlet-name>
+        <url-pattern>/vaccantroom/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.wavemaker.controller.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/user/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>BedServlet</servlet-name>
+        <servlet-class>com.wavemaker.controller.BedServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BedServlet</servlet-name>
+        <url-pattern>/bed/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>com.wavemaker.controller.BookingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/booking/*</url-pattern>
+    </servlet-mapping>
 </web-app>

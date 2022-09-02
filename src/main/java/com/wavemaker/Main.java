@@ -2,8 +2,6 @@ package com.wavemaker;
 import com.wavemaker.manager.*;
 import com.wavemaker.manager.implementation.*;
 import com.wavemaker.model.*;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -297,7 +295,5 @@ public class Main {
                     break;
             }
         }
-
-
     }
 }

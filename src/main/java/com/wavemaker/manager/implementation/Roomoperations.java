@@ -1,5 +1,5 @@
 package com.wavemaker.manager.implementation;
-import com.wavemaker.connectivity.MySQLConnectionUtility;
+import com.wavemaker.connection.MySQLConnectionUtility;
 import com.wavemaker.manager.BedManager;
 import com.wavemaker.manager.RoomManager;
 import com.wavemaker.model.Room;
